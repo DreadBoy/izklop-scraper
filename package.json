@@ -1,0 +1,11 @@
+{
+  "name": "IzklopParser",
+  "version": "1.0.0",
+  "description": "Parser to extract comments and forum posts from izklop.com",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Matic Leva",
+  "license": "ISC"
+}
