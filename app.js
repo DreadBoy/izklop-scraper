@@ -1,15 +1,19 @@
 var parser = require('./parser'),
+    database = require('./database'),
     fs = require('fs'),
     _ = require('lodash');
 
 
 
-parser.parseArticleListMore(2, function(comments){
+parser.parseArticleListMore(23, 1, function(comments){
     comments = _.uniq(comments);
-    fs.writeFile('korpus.txt', comments.join("\n"), function (err) {
+    console.log("Done! Vse pobrano in shranjeno.");
+    console.log("Našel sem " + comments.length + " komentarjev.");
+    database.saveNerazvrščen(comments);
+    /*fs.writeFile('korpus.txt', comments.join("\n"), function (err) {
         if (err) throw err;
         console.log('It\'s saved!');
-    });
+    });*/
 });
 
 

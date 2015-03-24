@@ -7,7 +7,7 @@ function getArticles(html, domain){
     var parsedHTML = $.load(html);
     parsedHTML('.titlelink').map(function(i, link) {
         var href = $(link).attr('href');
-        articles.push(domain + href);
+        articles.push("http://izklop.com" + href);
     });
     return articles;
 }
@@ -41,15 +41,16 @@ module.exports = new function IzklopParser(){
                 if (err)
                     return console.error(err);
                 html = iconv.decode(html, 'windows-1250');
-                var articles = getArticles(html, domain);
+                var articles = getArticles(html);
                 articlesNum = articles.length;
-                articles.forEach(function (link) {
+                articles.forEach(function (link, index) {
                     request.get({
                         uri:link,
                         encoding: null
                     },
                     function (err, response, html) {
                         articlesFinished++;
+                        console.log(articlesFinished + "/" + articlesNum);
                         if (err)
                             return console.error(err);
                         html = iconv.decode(html, 'windows-1250');
@@ -65,15 +66,16 @@ module.exports = new function IzklopParser(){
 
     };
 
-    that.parseArticleListMore = function (number, callback) {
+    that.parseArticleListMore = function (start, number, callback) {
         var comments = [];
-        for(var j = 1; j < number; j++) {
+        for(var j = start; j < start + number; j++) {
             (function(i) {
                 var domain = "http://izklop.com/?page=" + i;
                 that.parseArticleList(domain, function (comms) {
-                    comments.concat(comms);
-                    if(i == number)
-                        callback(commnents);
+                    console.log("Končana stran: " + i + "/" + (number));
+                    comments = comments.concat(comms);
+                    if(i == start + number - 1)
+                        callback(comments);
                 });
             })(j);
         }
